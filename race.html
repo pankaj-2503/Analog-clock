@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analog Clock</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #clock {
+            width: 200px;
+            height: 200px;
+            margin: 50px auto;
+            position: relative;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hand {
+            background-color: #333;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .hour-hand {
+            width: 6px;
+            height: 60px;
+            margin-left: -3px;
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 80px;
+            margin-left: -2px;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 90px;
+            margin-left: -1px;
+            background-color: #f00;
+        }
+
+        .toggle {
+            margin-top: 20px;
+        }
+
+        .toggle label {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .toggle input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle .slider {
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .toggle .slider:before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #fff;
+            top: 1px;
+            left: 1px;
+            transition: all 0.3s;
+        }
+
+        .toggle input[type="checkbox"]:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .toggle .slider.round {
+            border-radius: 20px;
+        }
+
+        .toggle .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock"></div>
+
+    <div class="toggle">
+        <label for="mode-toggle">Dark Mode</label>
+        <input type="checkbox" id="mode-toggle">
+        <div class="slider round"></div>
+    </div>
+
+    <script>
+        function updateTime() {
+            var now = new Date();
+
+            var hour = now.getHours();
+            var minute = now.getMinutes();
+            var second = now.getSeconds();
+
+            var hourRotation = (hour * 30) + (minute / 2);
+            var minuteRotation = (minute * 6) + (second / 10);
+            var secondRotation = second * 6;
+
+            var hourHand = document.querySelector('.hour-hand');
+            var minuteHand = document.querySelector('.minute-hand');
+            var secondHand = document.querySelector('.second-hand');
+
+            hourHand.style.transform = `rotate(${hourRotation}deg)`;
+            minuteHand.style.transform = `rotate(${minuteRotation}deg)`;
+            secondHand.style.transform = `rotate(${secondRotation}deg)`;
+        }
+
+        function toggleDarkMode() {
+            var clock = document.getElementById('clock');
+            clock.classList.toggle('dark-mode');
+        }
+
+        var modeToggle = document.getElementById('mode-toggle');
+        modeToggle.addEventListener('change', toggleDarkMode);
+
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
